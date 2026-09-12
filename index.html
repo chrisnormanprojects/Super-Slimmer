@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#9c1458" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <title>Super Slimmer</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">PERSONAL FOOD REFERENCE</div>
+      <h1>Super Slimmer</h1>
+      <p class="subtitle">Fast UK food search, barcode lookup and personal points library.</p>
+    </div>
+    <button id="installBtn" class="ghost hidden">Install</button>
+  </header>
+
+  <main>
+    <section id="searchView" class="view active">
+      <div class="searchPanel">
+        <div class="searchRow">
+          <input id="searchInput" type="search" placeholder="Search food, brand or barcode…" autocomplete="off" inputmode="search" />
+          <button id="searchBtn" class="primary">Search</button>
+        </div>
+        <div class="quickRow">
+          <button id="scanBtn" class="chip">▣ Scan barcode</button>
+          <button class="chip categoryQuick" data-category="Loose & fresh">Loose & fresh</button>
+          <button class="chip categoryQuick" data-category="Tinned & jars">Tinned</button>
+          <button class="chip categoryQuick" data-category="Packets & cupboard">Packets</button>
+        </div>
+      </div>
+
+      <div class="notice">
+        <strong>How values work:</strong> your own confirmed value always wins. If none is saved, the app can show a clearly-labelled calorie-based estimate. Estimates are not official Slimming World values.
+      </div>
+
+      <div class="sectionHead">
+        <h2 id="resultsTitle">Popular basics</h2>
+        <span id="resultMeta"></span>
+      </div>
+      <div id="results" class="cards"></div>
+    </section>
+
+    <section id="categoriesView" class="view">
+      <div class="sectionHead"><h2>Browse categories</h2><span>Built-in + live packaged products</span></div>
+      <div id="categoryGrid" class="categoryGrid"></div>
+    </section>
+
+    <section id="savedView" class="view">
+      <div class="sectionHead"><h2>My confirmed foods</h2><span id="savedCount"></span></div>
+      <div class="toolbar">
+        <button id="exportBtn" class="secondary">Export backup</button>
+        <label class="secondary fileLabel">Import backup<input id="importInput" type="file" accept="application/json" /></label>
+      </div>
+      <div id="savedResults" class="cards"></div>
+    </section>
+
+    <section id="calcView" class="view">
+      <div class="calculator card">
+        <h2>Quick estimate</h2>
+        <p>For foods where you only know calories, this uses the common historic shorthand of roughly <b>20 kcal ≈ 1 point</b>. This does not reproduce Slimming World’s proprietary calculation and is especially unsuitable for foods treated specially by the plan.</p>
+        <label>Calories for your portion<input id="calcCalories" type="number" min="0" step="1" placeholder="e.g. 180" /></label>
+        <div class="bigResult"><span id="calcPoints">—</span><small>estimated points</small></div>
+      </div>
+
+      <div class="card sources">
+        <h2>Data & important notes</h2>
+        <p><b>Packaged foods:</b> live product, barcode and nutrition information comes from Open Food Facts, an open collaborative database. It does not provide Slimming World values.</p>
+        <p><b>Loose/generic foods:</b> this starter library reflects common UK foods and can be expanded using the UK Composition of Foods Integrated Dataset (CoFID).</p>
+        <p><b>Official plan information:</b> Slimming World states that only Slimming World can designate official values and restricts its estimator to members’ personal use. This app therefore does not scrape, copy or bypass the members-only database.</p>
+        <p><b>Not affiliated:</b> Super Slimmer is an independent personal reference tool and is not associated with, endorsed by or sponsored by Slimming World.</p>
+        <div class="sourceLinks">
+          <a href="https://www.slimmingworld.co.uk/slimming-world-app" target="_blank" rel="noreferrer">Slimming World app information</a>
+          <a href="https://account.slimmingworld.co.uk/terms-of-use" target="_blank" rel="noreferrer">Slimming World terms</a>
+          <a href="https://world.openfoodfacts.org/" target="_blank" rel="noreferrer">Open Food Facts</a>
+          <a href="https://www.gov.uk/government/publications/composition-of-foods-integrated-dataset-cofid" target="_blank" rel="noreferrer">UK CoFID dataset</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottomNav" aria-label="Main navigation">
+    <button class="navBtn active" data-view="searchView"><span>⌕</span>Search</button>
+    <button class="navBtn" data-view="categoriesView"><span>▦</span>Categories</button>
+    <button class="navBtn" data-view="savedView"><span>★</span>Saved</button>
+    <button class="navBtn" data-view="calcView"><span>≈</span>Estimate</button>
+  </nav>
+
+  <dialog id="editDialog">
+    <form method="dialog" id="editForm">
+      <button class="dialogClose" value="cancel" aria-label="Close">×</button>
+      <div id="dialogProduct"></div>
+      <div class="formGrid">
+        <label>Confirmed value<input id="confirmedValue" type="number" min="0" step="0.5" placeholder="e.g. 4.5" /></label>
+        <label>Portion<input id="confirmedPortion" type="text" placeholder="e.g. 1 bar / 30g" /></label>
+        <label class="wide">Note / source<input id="confirmedNote" type="text" placeholder="e.g. checked in member app 12 Sep 2026" /></label>
+      </div>
+      <p class="small">Enter only a value you have personally confirmed from a source you trust. It is stored on this device only.</p>
+      <div class="dialogActions">
+        <button id="deleteSavedBtn" type="button" class="danger hidden">Remove</button>
+        <button value="cancel" class="secondary">Cancel</button>
+        <button id="saveConfirmedBtn" type="button" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="scanDialog">
+    <div class="scannerWrap">
+      <button id="scanClose" class="dialogClose">×</button>
+      <h2>Scan barcode</h2>
+      <video id="scanVideo" autoplay playsinline muted></video>
+      <p id="scanStatus" class="small">Starting camera…</p>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>
