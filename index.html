@@ -15,7 +15,7 @@
     <div>
       <div class="eyebrow">PERSONAL FOOD REFERENCE</div>
       <h1>Super Slimmer</h1>
-      <p class="subtitle">Fast UK food search, barcode lookup and personal points library.</p>
+      <p class="subtitle">Fast UK food search with Free Food, Healthy Extra and Swip classifications.</p>
     </div>
     <button id="installBtn" class="ghost hidden">Install</button>
   </header>
@@ -36,7 +36,7 @@
       </div>
 
       <div class="notice">
-        <strong>How values work:</strong> your own confirmed value always wins. If none is saved, the app can show a clearly-labelled calorie-based estimate. Estimates are not official Slimming World values.
+        <strong>How classifications work:</strong> public Slimming World guidance is used for foods we can classify safely. Branded/processed products default to <b>Needs checking</b> unless you save a confirmed classification. Calorie estimates are secondary only and never decide whether a food is Free.
       </div>
 
       <div class="sectionHead">
@@ -62,20 +62,23 @@
 
     <section id="calcView" class="view">
       <div class="calculator card">
-        <h2>Quick estimate</h2>
-        <p>For foods where you only know calories, this uses the common historic shorthand of roughly <b>20 kcal ≈ 1 point</b>. This does not reproduce Slimming World’s proprietary calculation and is especially unsuitable for foods treated specially by the plan.</p>
+        <h2>Calorie fallback</h2>
+        <p>This is <b>not</b> a Slimming World classifier. It only shows the old rough shorthand of about <b>20 kcal ≈ 1 historic Syn/Swip</b> when you have no verified value. Free Food and Healthy Extra status cannot be calculated from calories alone.</p>
         <label>Calories for your portion<input id="calcCalories" type="number" min="0" step="1" placeholder="e.g. 180" /></label>
-        <div class="bigResult"><span id="calcPoints">—</span><small>estimated points</small></div>
+        <div class="bigResult"><span id="calcPoints">—</span><small>rough calorie fallback</small></div>
       </div>
 
       <div class="card sources">
         <h2>Data & important notes</h2>
         <p><b>Packaged foods:</b> live product, barcode and nutrition information comes from Open Food Facts, an open collaborative database. It does not provide Slimming World values.</p>
-        <p><b>Loose/generic foods:</b> this starter library reflects common UK foods and can be expanded using the UK Composition of Foods Integrated Dataset (CoFID).</p>
+        <p><b>Plan classifications:</b> the built-in starter library uses public Slimming World guidance for broad Free Food and Healthy Extra categories. Exact branded products are not guessed from nutrition data.</p>
+        <p><b>Loose/generic foods:</b> nutrition information can be expanded using the UK Composition of Foods Integrated Dataset (CoFID).</p>
         <p><b>Official plan information:</b> Slimming World states that only Slimming World can designate official values and restricts its estimator to members’ personal use. This app therefore does not scrape, copy or bypass the members-only database.</p>
         <p><b>Not affiliated:</b> Super Slimmer is an independent personal reference tool and is not associated with, endorsed by or sponsored by Slimming World.</p>
         <div class="sourceLinks">
-          <a href="https://www.slimmingworld.co.uk/slimming-world-app" target="_blank" rel="noreferrer">Slimming World app information</a>
+          <a href="https://www.slimmingworld.co.uk/what-can-i-eat" target="_blank" rel="noreferrer">Slimming World eating plan</a>
+          <a href="https://www.slimmingworld.co.uk/blog/discover-slimming-world-free-foods/" target="_blank" rel="noreferrer">Slimming World Free Foods</a>
+          <a href="https://www.slimmingworld.co.uk/blog/slimming-world-changes-2026/" target="_blank" rel="noreferrer">2026 Healthy Extra & Swip changes</a>
           <a href="https://account.slimmingworld.co.uk/terms-of-use" target="_blank" rel="noreferrer">Slimming World terms</a>
           <a href="https://world.openfoodfacts.org/" target="_blank" rel="noreferrer">Open Food Facts</a>
           <a href="https://www.gov.uk/government/publications/composition-of-foods-integrated-dataset-cofid" target="_blank" rel="noreferrer">UK CoFID dataset</a>
@@ -96,11 +99,12 @@
       <button class="dialogClose" value="cancel" aria-label="Close">×</button>
       <div id="dialogProduct"></div>
       <div class="formGrid">
-        <label>Confirmed value<input id="confirmedValue" type="number" min="0" step="0.5" placeholder="e.g. 4.5" /></label>
-        <label>Portion<input id="confirmedPortion" type="text" placeholder="e.g. 1 bar / 30g" /></label>
+        <label>Classification<select id="confirmedStatus"><option value="free">Free Food</option><option value="speed">Speed Free Food</option><option value="healthy_extra">Healthy Extra</option><option value="swips">Swips</option><option value="unknown">Needs checking</option></select></label>
+        <label id="swipValueLabel">Confirmed Swip value<input id="confirmedValue" type="number" min="0" step="0.5" placeholder="e.g. 4.5" /></label>
+        <label>Portion / allowance<input id="confirmedPortion" type="text" placeholder="e.g. 1 bar / 30g" /></label>
         <label class="wide">Note / source<input id="confirmedNote" type="text" placeholder="e.g. checked in member app 12 Sep 2026" /></label>
       </div>
-      <p class="small">Enter only a value you have personally confirmed from a source you trust. It is stored on this device only.</p>
+      <p class="small">Save only a classification/value you have personally confirmed from a source you trust. It is stored on this device only.</p>
       <div class="dialogActions">
         <button id="deleteSavedBtn" type="button" class="danger hidden">Remove</button>
         <button value="cancel" class="secondary">Cancel</button>
