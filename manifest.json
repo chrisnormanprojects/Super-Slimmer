@@ -1,0 +1,10 @@
+{
+  "name":"Super Slimmer",
+  "short_name":"Super Slimmer",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#fff8fb",
+  "theme_color":"#9c1458",
+  "description":"Independent UK food reference with barcode lookup, nutrition data and personal confirmed points.",
+  "icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+}
