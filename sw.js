@@ -1,4 +1,4 @@
-const CACHE='super-slimmer-v7';
+const CACHE='super-slimmer-v8';
 const SHELL=['./','./index.html','./styles.css','./reference-data.js','./supermarket-data.js','./aldi-lidl-extra.js','./supermarket-bridge.js','./app.js','./manifest.json','./icon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
